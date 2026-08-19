@@ -116,7 +116,7 @@
   .playground{
     position:relative;
     height:min(70vh, 560px); min-height:360px;
-    overflow:hidden; cursor:none;
+    overflow:hidden; cursor:none; touch-action:none;
   }
   .playground-hint{
     position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
@@ -280,7 +280,7 @@
 <section class="playground-section">
   <div class="playground-surface">
     <div class="playground-toolbar">
-      <span class="section-eyebrow">try the gun ✎</span>
+      <span class="section-eyebrow">draw here ✎</span>
       <span class="playground-sub">Draw anywhere below</span>
       <button id="eraseBtn" type="button">Erase</button>
     </div>
@@ -551,11 +551,18 @@
     currentStroke = null;
     gunCursor.style.opacity = '0';
   });
-  zone.addEventListener('touchmove', (e) => {
+  zone.addEventListener('touchstart', (e) => {
+    e.preventDefault();
     const rect = zone.getBoundingClientRect();
     const touch = e.touches[0];
     handleMove(touch.clientX - rect.left, touch.clientY - rect.top);
-  }, { passive: true });
+  }, { passive: false });
+  zone.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const rect = zone.getBoundingClientRect();
+    const touch = e.touches[0];
+    handleMove(touch.clientX - rect.left, touch.clientY - rect.top);
+  }, { passive: false });
   zone.addEventListener('touchend', () => {
     lastPoint = null;
     currentStroke = null;
