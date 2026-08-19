@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;800&family=Newsreader:ital@1&display=swap" rel="stylesheet">
 <style>
   :root{
+    --bg:#F7F1E9;
     --paper:#EAE7DF;
     --panel:#F3F1EA;
     --ink:#17161A;
@@ -21,9 +22,7 @@
   html{ scroll-behavior:smooth; }
   body{
     margin:0;
-    background-color:var(--paper);
-    background-image: radial-gradient(rgba(23,22,26,0.035) 0.6px, transparent 0.6px);
-    background-size: 5px 5px;
+    background-color:var(--bg);
     color:var(--ink);
     font-family:'IBM Plex Mono',monospace;
     -webkit-font-smoothing:antialiased;
@@ -35,7 +34,7 @@
   /* ---------- Nav ---------- */
   nav.top{
     position:sticky; top:0; z-index:20;
-    background:rgba(234,231,223,0.92); backdrop-filter:blur(6px);
+    background:rgba(247,241,233,0.92); backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
   }
   nav.top .wrap{
@@ -55,7 +54,7 @@
     .btn{ padding:9px 14px; font-size:11px; }
   }
   .btn{
-    display:inline-block; background:var(--ink); color:var(--paper);
+    display:inline-block; background:var(--ink); color:var(--bg);
     font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase;
     letter-spacing:0.06em; padding:10px 18px; text-decoration:none; border:1px solid var(--ink);
     transition:opacity .15s ease; white-space:nowrap;
@@ -69,59 +68,88 @@
     border-bottom:1px solid var(--line);
   }
   .hero-ornament{
-    position:absolute; top:-60px; right:-120px; width:520px; opacity:0.16;
+    position:absolute; top:-60px; right:-120px; width:520px; opacity:0.4;
     pointer-events:none; z-index:0;
   }
   @media (max-width:640px){
-    .hero-ornament{ width:280px; top:-20px; right:-90px; opacity:0.12; }
+    .hero-ornament{ width:280px; top:-20px; right:-90px; opacity:0.32; }
   }
   .hero-inner{ position:relative; z-index:2; }
+  .hero-logo{
+    width:min(420px, 70vw); height:auto; margin-bottom:30px;
+  }
   .hero-eyebrow{
+    display:flex; align-items:center; gap:9px;
     font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted);
     margin-bottom:18px;
   }
+  .hero-eyebrow .dot{ width:7px; height:7px; border-radius:50%; background:var(--pink); display:inline-block; }
   h1.hero-title{
     font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-0.02em;
-    font-size:clamp(38px, 6vw, 68px); line-height:1.02; margin:0 0 24px; max-width:820px;
+    font-size:clamp(34px, 5.4vw, 60px); line-height:1.04; margin:0 0 22px; max-width:780px;
   }
   .hero-accent{
     font-family:'Newsreader',serif; font-style:italic; font-size:19px; line-height:1.6;
-    max-width:540px; margin:0 0 30px; color:var(--ink);
+    max-width:520px; margin:0 0 30px; color:var(--ink);
   }
   .hero-ctas{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
 
   /* ---------- Playground ---------- */
-  .playground-section{ padding:0 0 80px; border-bottom:1px solid var(--line); }
-  .playground-label{
-    display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;
-    margin-bottom:14px;
+  .playground-section{ padding:0; border-bottom:1px solid var(--line); }
+  .playground-surface{
+    position:relative;
+    width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw;
+    background-color:var(--paper);
+    background-image: radial-gradient(rgba(23,22,26,0.05) 0.7px, transparent 0.7px);
+    background-size: 6px 6px;
+  }
+  .playground-toolbar{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+    padding:20px 24px;
+  }
+  .playground-toolbar .section-eyebrow{
+    font-family:'Newsreader',serif; font-style:italic; font-size:22px; color:var(--ink);
+    text-transform:none; letter-spacing:0; margin-bottom:0;
   }
   .playground-sub{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+  @media (max-width:640px){ .playground-sub{ display:none; } }
   .playground{
-    position:relative; height:300px; border:1px dashed var(--line); background:var(--panel);
+    position:relative;
+    height:min(70vh, 560px); min-height:360px;
     overflow:hidden; cursor:none;
   }
   .playground-hint{
     position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted);
-    pointer-events:none; transition:opacity .3s ease;
+    font-family:'Newsreader',serif; font-style:italic; font-size:17px; color:var(--muted);
+    pointer-events:none; transition:opacity .3s ease; text-align:center;
   }
   .playground canvas{ position:absolute; inset:0; pointer-events:none; }
   #gunCursor{
-    position:absolute; width:76px; height:auto; pointer-events:none;
+    position:absolute; width:88px; height:auto; pointer-events:none;
     opacity:0; transform:translate(-50%,-50%); transition:opacity .15s ease;
-    will-change:transform;
+    will-change:transform; z-index:2;
   }
-  .draw-zone{ display:none; }
+  #eraseBtn{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.06em;
+    background:var(--bg); color:var(--ink); border:1px solid var(--ink); padding:9px 16px;
+    cursor:pointer; transition:opacity .15s ease;
+  }
+  #eraseBtn:hover{ opacity:0.7; }
+  @media (max-width:640px){
+    .playground{ height:55vh; min-height:320px; }
+    #gunCursor{ width:60px; }
+  }
   canvas#inkCanvas{ position:absolute; inset:0; pointer-events:none; z-index:1; }
 
   /* ---------- Section shared ---------- */
-  section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  section{ padding:80px 0; border-bottom:1px solid var(--line); scroll-margin-top:90px; }
   section:last-of-type{ border-bottom:none; }
   .section-eyebrow{
+    display:flex; align-items:center; gap:9px;
     font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted);
     margin-bottom:14px;
   }
+  .section-eyebrow .dot{ width:7px; height:7px; border-radius:50%; display:inline-block; flex-shrink:0; }
   h2{
     font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-0.01em;
     font-size:clamp(26px, 4vw, 38px); margin:0 0 20px; max-width:640px;
@@ -135,7 +163,7 @@
   }
   @media (max-width:760px){ .feature-grid{ grid-template-columns:1fr; } }
   .feature{
-    background:var(--paper); padding:30px 26px;
+    background:var(--panel); padding:30px 26px;
   }
   .feature .k{
     font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase;
@@ -205,7 +233,7 @@
   @media (max-width:560px){ .row2{ grid-template-columns:1fr; gap:14px; } }
   .submit-row{ margin-top:30px; }
   button[type=submit]{
-    width:100%; background:var(--ink); color:var(--paper); border:none;
+    width:100%; background:var(--ink); color:var(--bg); border:none;
     font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:0.06em; text-transform:uppercase;
     padding:15px 0; cursor:pointer; transition:opacity .15s ease;
   }
@@ -214,7 +242,7 @@
   .form-status.show{ display:block; }
   .form-thanks{ display:none; text-align:center; padding:50px 0; }
   .form-thanks.show{ display:block; }
-  .form-thanks .accent{ font-family:'Newsreader',serif; font-style:italic; font-size:22px; display:block; margin-bottom:10px; }
+  .form-thanks .accent{ font-family:'Newsreader',serif; font-style:italic; font-size:24px; display:block; margin-bottom:8px; }
 
   /* ---------- Footer ---------- */
   footer{ padding:50px 0; }
@@ -239,7 +267,8 @@
 <section class="hero" id="heroSection">
   <img src="ornament.png" alt="" class="hero-ornament">
   <div class="wrap hero-inner">
-    <div class="hero-eyebrow">Currently in early access</div>
+    <img src="wordmark.png" alt="Glød" class="hero-logo">
+    <div class="hero-eyebrow"><span class="dot"></span>Currently in early access</div>
     <h1 class="hero-title">Every booking request, actually in one place.</h1>
     <p class="hero-accent">Glød turns your booking form into a real client tracker, photos, notes, prices and all, synced the moment someone hits submit.</p>
     <div class="hero-ctas">
@@ -249,13 +278,14 @@
 </section>
 
 <section class="playground-section">
-  <div class="wrap">
-    <div class="playground-label">
-      <span class="section-eyebrow" style="margin-bottom:0;">Try the gun</span>
-      <span class="playground-sub">Move your cursor through the box below</span>
+  <div class="playground-surface">
+    <div class="playground-toolbar">
+      <span class="section-eyebrow">try the gun ✎</span>
+      <span class="playground-sub">Draw anywhere below</span>
+      <button id="eraseBtn" type="button">Erase</button>
     </div>
     <div class="playground" id="playground">
-      <span class="playground-hint" id="playgroundHint">draw here</span>
+      <span class="playground-hint" id="playgroundHint">move your cursor to draw</span>
       <canvas id="inkCanvas"></canvas>
       <img src="gun.png" alt="" id="gunCursor">
     </div>
@@ -264,7 +294,7 @@
 
 <section id="how">
   <div class="wrap">
-    <div class="section-eyebrow">What it does</div>
+    <div class="section-eyebrow"><span class="dot" style="background:var(--yellow);"></span>What it does</div>
     <h2>Built around how a booking day actually goes.</h2>
     <p class="lede">One form your clients fill out, one place where every request lives after that. No inbox digging, no spreadsheet, no copying details by hand.</p>
 
@@ -277,7 +307,7 @@
           <span class="swatch" style="background:var(--ink);"></span>
           <span class="swatch" style="background:var(--pink);"></span>
           <span class="swatch" style="background:var(--yellow);"></span>
-          <span class="swatch" style="background:var(--paper); border:1px solid var(--line);"></span>
+          <span class="swatch" style="background:var(--bg); border:1px solid var(--line);"></span>
         </div>
       </div>
       <div class="feature">
@@ -311,7 +341,7 @@
 
 <section id="preview">
   <div class="wrap">
-    <div class="section-eyebrow">A closer look</div>
+    <div class="section-eyebrow"><span class="dot" style="background:var(--pink);"></span>A closer look</div>
     <h2>What it actually looks like.</h2>
     <p class="lede">Real screens, no mockups. This is the exact interface waiting for you if you get access.</p>
 
@@ -343,7 +373,7 @@
 
 <section id="homescreen">
   <div class="wrap">
-    <div class="section-eyebrow">Setup</div>
+    <div class="section-eyebrow"><span class="dot" style="background:var(--yellow);"></span>Setup</div>
     <h2>Getting it onto your home screen</h2>
     <p class="lede">Takes about a minute, and only needs doing once. From then on it opens like any other app.</p>
 
@@ -375,7 +405,7 @@
 
 <section id="access">
   <div class="wrap">
-    <div class="section-eyebrow">Early access</div>
+    <div class="section-eyebrow"><span class="dot" style="background:var(--pink);"></span>Early access</div>
     <h2>Request access</h2>
     <p class="lede">A small group of artists are trying this out right now. Tell us a bit about your work and we'll be in touch.</p>
 
@@ -453,31 +483,59 @@
   const ctx = canvas.getContext('2d');
   const gunCursor = document.getElementById('gunCursor');
   const playgroundHint = document.getElementById('playgroundHint');
+  const eraseBtn = document.getElementById('eraseBtn');
   const trailColors = ['23,22,26', '230,166,180', '227,185,79']; // ink, pink, yellow
-  let points = [];
-  let currentColor = trailColors[0];
-  let lastAngle = -45;
+  let strokes = [];        // persisted, redrawn on resize
+  let currentStroke = null;
+  let lastPoint = null;
+  let lastAngle = -65;
 
   function resizeCanvas(){
     canvas.width = zone.offsetWidth;
     canvas.height = zone.offsetHeight;
+    redrawAll();
   }
-  resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function redrawAll(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    strokes.forEach(stroke => {
+      if(stroke.points.length < 2) return;
+      ctx.beginPath();
+      ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+      for(let i = 1; i < stroke.points.length; i++) ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+      ctx.strokeStyle = `rgb(${stroke.color})`;
+      ctx.lineWidth = 6;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+    });
+  }
 
   function handleMove(x, y){
-    if(points.length === 0){
-      currentColor = trailColors[Math.floor(Math.random() * trailColors.length)];
+    if(!lastPoint){
+      const color = trailColors[Math.floor(Math.random() * trailColors.length)];
+      currentStroke = { color, points: [] };
+      strokes.push(currentStroke);
       playgroundHint.style.opacity = '0';
     }
-    const last = points[points.length - 1];
-    if(last){
-      const dx = x - last.x, dy = y - last.y;
+    if(lastPoint){
+      const dx = x - lastPoint.x, dy = y - lastPoint.y;
       if(Math.abs(dx) > 1 || Math.abs(dy) > 1){
         lastAngle = Math.atan2(dy, dx) * (180 / Math.PI);
       }
+      ctx.beginPath();
+      ctx.moveTo(lastPoint.x, lastPoint.y);
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = `rgb(${currentStroke.color})`;
+      ctx.lineWidth = 6;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
     }
-    points.push({ x, y, t: Date.now() });
+    currentStroke.points.push({ x, y });
+    lastPoint = { x, y };
     gunCursor.style.opacity = '1';
     gunCursor.style.transform = `translate(-50%,-50%) rotate(${lastAngle - 110}deg)`;
     gunCursor.style.left = x + 'px';
@@ -489,9 +547,9 @@
     handleMove(e.clientX - rect.left, e.clientY - rect.top);
   });
   zone.addEventListener('mouseleave', () => {
-    points = [];
+    lastPoint = null;
+    currentStroke = null;
     gunCursor.style.opacity = '0';
-    playgroundHint.style.opacity = '1';
   });
   zone.addEventListener('touchmove', (e) => {
     const rect = zone.getBoundingClientRect();
@@ -499,34 +557,16 @@
     handleMove(touch.clientX - rect.left, touch.clientY - rect.top);
   }, { passive: true });
   zone.addEventListener('touchend', () => {
-    points = [];
+    lastPoint = null;
+    currentStroke = null;
     gunCursor.style.opacity = '0';
-    playgroundHint.style.opacity = '1';
   });
 
-  function draw(){
+  eraseBtn.addEventListener('click', () => {
+    strokes = [];
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const now = Date.now();
-    points = points.filter(p => now - p.t < 1100);
-
-    if(points.length > 1){
-      for(let i = 1; i < points.length; i++){
-        const p0 = points[i-1];
-        const p1 = points[i];
-        const age = (now - p1.t) / 1100;
-        const alpha = Math.max(0, 1 - age);
-        ctx.beginPath();
-        ctx.moveTo(p0.x, p0.y);
-        ctx.lineTo(p1.x, p1.y);
-        ctx.strokeStyle = `rgba(${currentColor},${alpha * 0.8})`;
-        ctx.lineWidth = 4 + alpha * 3.5;
-        ctx.lineCap = 'round';
-        ctx.stroke();
-      }
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
+    playgroundHint.style.opacity = '1';
+  });
 
   /* ---------- Access form ---------- */
   const accessForm = document.getElementById('accessForm');
