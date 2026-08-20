@@ -116,7 +116,7 @@
   .playground{
     position:relative;
     height:min(70vh, 560px); min-height:360px;
-    overflow:hidden; cursor:none; touch-action:none;
+    overflow:hidden; cursor:none; touch-action:none; user-select:none;
   }
   .playground-hint{
     position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
@@ -285,7 +285,7 @@
       <button id="eraseBtn" type="button">Erase</button>
     </div>
     <div class="playground" id="playground">
-      <span class="playground-hint" id="playgroundHint">move your cursor to draw</span>
+      <span class="playground-hint" id="playgroundHint">click, or tap and drag, to draw</span>
       <canvas id="inkCanvas"></canvas>
       <img src="gun.png" alt="" id="gunCursor">
     </div>
@@ -489,6 +489,7 @@
   let currentStroke = null;
   let lastPoint = null;
   let lastAngle = -65;
+  let mouseDrawing = false; // desktop only: click toggles pen down / pen up
 
   function resizeCanvas(){
     canvas.width = zone.offsetWidth;
@@ -542,15 +543,35 @@
     gunCursor.style.top = y + 'px';
   }
 
+  function followOnly(x, y){
+    gunCursor.style.opacity = '1';
+    gunCursor.style.left = x + 'px';
+    gunCursor.style.top = y + 'px';
+  }
+
+  // Desktop: click toggles pen down / pen up, so you can lift and reposition
+  zone.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    const rect = zone.getBoundingClientRect();
+    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    mouseDrawing = !mouseDrawing;
+    lastPoint = null;
+    currentStroke = null;
+    if(mouseDrawing) handleMove(x, y);
+  });
   zone.addEventListener('mousemove', (e) => {
     const rect = zone.getBoundingClientRect();
-    handleMove(e.clientX - rect.left, e.clientY - rect.top);
+    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    if(mouseDrawing) handleMove(x, y); else followOnly(x, y);
   });
   zone.addEventListener('mouseleave', () => {
+    mouseDrawing = false;
     lastPoint = null;
     currentStroke = null;
     gunCursor.style.opacity = '0';
   });
+
+  // Touch: unchanged, draw while touching, lift finger to stop
   zone.addEventListener('touchstart', (e) => {
     e.preventDefault();
     const rect = zone.getBoundingClientRect();
@@ -571,6 +592,9 @@
 
   eraseBtn.addEventListener('click', () => {
     strokes = [];
+    mouseDrawing = false;
+    lastPoint = null;
+    currentStroke = null;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     playgroundHint.style.opacity = '1';
   });
