@@ -93,6 +93,9 @@
     max-width:520px; margin:0 0 30px; color:var(--ink);
   }
   .hero-ctas{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .hero-hint{
+    font-size:11.5px; color:var(--muted); margin:16px 0 0; max-width:420px; line-height:1.6;
+  }
 
   /* ---------- Playground ---------- */
   .playground-section{ padding:0; border-bottom:1px solid var(--line); }
@@ -274,6 +277,7 @@
     <div class="hero-ctas">
       <a href="#access" class="btn">Request access</a>
     </div>
+    <p class="hero-hint">This is an early prototype, and it'll keep changing as we build. Expect the odd rough edge.</p>
   </div>
 </section>
 
@@ -323,7 +327,7 @@
       <div class="feature">
         <div class="k">Your invoices</div>
         <h3>A proper invoice, one click away</h3>
-        <p>Add VAT per booking and Glød works out what to actually charge, before you even send the quote. Generate a clean invoice with the breakdown already done, then print it or save straight to PDF.</p>
+        <p>Add VAT per booking and Glød works out what to actually charge, before you even send the quote. Invoices number themselves in order, and the description is yours to edit before it goes out. Print it or save straight to PDF.</p>
       </div>
       <div class="feature">
         <div class="k">Your phone</div>
@@ -341,9 +345,9 @@
         <p>Signed in as you, seeing only your requests. If another artist joins later, your data stays fully separate from theirs.</p>
       </div>
       <div class="feature">
-        <div class="k">Your team</div>
-        <h3>Bring on a second artist safely</h3>
-        <p>Give a new artist a starter login and they're asked to set their own password the moment they sign in. From there, their bookings and their numbers stay just as separate as yours.</p>
+        <div class="k">Your account</div>
+        <h3>Everything in one settings screen</h3>
+        <p>Set your business name, change your password, and set or change your accounting PIN, all from one tab. Password and PIN changes always confirm the old one first.</p>
       </div>
       <div class="feature">
         <div class="k">Your cities</div>
@@ -429,7 +433,7 @@
   <div class="wrap">
     <div class="section-eyebrow"><span class="dot" style="background:var(--pink);"></span>Early access</div>
     <h2>Request access</h2>
-    <p class="lede">A small group of artists are trying this out right now. Tell us a bit about your work and we'll be in touch.</p>
+    <p class="lede">A small group of artists are trying this out right now. Tell us a bit about your work and we'll be in touch. Worth knowing upfront, this is a prototype, still actively being built, so features and the odd detail may shift as it goes.</p>
 
     <div id="formWrap">
       <form id="accessForm" action="https://formsubmit.co/bookings@toniagost.com" method="POST">
